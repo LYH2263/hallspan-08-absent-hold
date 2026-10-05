@@ -14,7 +14,9 @@ def seed_if_empty(db: Session) -> None:
         db.add(p); db.flush()
         paper_ids.append(p.id)
     names = ["陈一", "李二", "张三", "赵四", "钱五", "孙六", "周七", "吴八", "郑九", "王十", "冯十一", "陈十二"]
+    # 末位“陈十二”标记为缺考，用于演示占格保留 / 释放空出两种策略。
+    absent_idx = {len(names) - 1}
     for i, name in enumerate(names):
         db.add(Candidate(hall_id=hall.id, name=name, ticket_no=f"T{2026001+i}",
-                         paper_id=paper_ids[i % len(paper_ids)]))
+                         paper_id=paper_ids[i % len(paper_ids)], absent=i in absent_idx))
     db.commit()

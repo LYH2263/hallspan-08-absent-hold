@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 from app.database import Base
 
@@ -11,6 +11,8 @@ class Hall(Base):
     rows: Mapped[int] = mapped_column(Integer)
     cols: Mapped[int] = mapped_column(Integer)
     min_manhattan: Mapped[int] = mapped_column(Integer, default=2)
+    # 缺考策略：hold=占格保留，release=释放空出；NULL=未配置，按 release 兼容现网。
+    absent_strategy: Mapped[str | None] = mapped_column(String(16), nullable=True, default=None)
 
 class PaperSet(Base):
     __tablename__ = "paper_sets"
@@ -25,6 +27,7 @@ class Candidate(Base):
     name: Mapped[str] = mapped_column(String(64))
     ticket_no: Mapped[str] = mapped_column(String(32))
     paper_id: Mapped[int] = mapped_column(ForeignKey("paper_sets.id"))
+    absent: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
 class SeatPlan(Base):
     __tablename__ = "seat_plans"

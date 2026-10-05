@@ -182,3 +182,34 @@ th { color: var(--hs-muted); font-weight: 700; font-size: 0.78rem; }
 }
 .seat.empty { background: transparent; border-style: dashed; color: var(--hs-muted); }
 .seat.bad { border-color: var(--hs-bad); background: #fde8e6; }
+
+/* 缺考策略工具栏 */
+.hs-toolbar { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.hs-strat-label { color: var(--hs-muted); font-size: 0.82rem; font-family: "Segoe UI", "PingFang SC", sans-serif; }
+.btn.hs-strat { background: #4a5a68; }
+.btn.hs-strat.active { background: var(--hs-wood); outline: 2px solid #6a5210; }
+.hs-error {
+  color: var(--hs-bad); font-size: 0.82rem; margin: 0.5rem 0 0;
+  font-family: "Segoe UI", "PingFang SC", sans-serif; font-weight: 700;
+}
+.btn.hs-mini { padding: 0.2rem 0.5rem; font-size: 0.72rem; }
+
+/* 缺考占格：占用账 reserved_absent 行在图上的样子（与违规高亮互斥，不并句） */
+.hs-desk.hs-absent-hold {
+  border-style: dashed;
+  border-color: #8a7a5a;
+  background: repeating-linear-gradient(45deg, #efe8d6, #efe8d6 6px, #e3d9bf 6px, #e3d9bf 12px);
+  color: #6a5a30;
+  box-shadow: none;
+}
+.hs-desk .hs-hold-ribbon {
+  position: absolute; top: 2px; left: 3px; right: 3px;
+  font-size: 0.55rem; font-weight: 800; letter-spacing: 0.05em; color: #6a5a30;
+}
+.hs-absent-badge {
+  display: inline-block; padding: 0 0.3rem; border-radius: 2px;
+  font-size: 0.68rem; font-weight: 800; color: #fff; background: #7a6a4a;
+  font-family: "Segoe UI", "PingFang SC", sans-serif;
+}
+.hs-roster-row.absent { opacity: 0.62; background: rgba(122, 106, 74, 0.08); }
+.hs-absent-row { font-size: 0.85rem; padding: 0.2rem 0; }
