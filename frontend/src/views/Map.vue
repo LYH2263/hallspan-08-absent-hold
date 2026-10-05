@@ -33,6 +33,8 @@ const cells = computed(() => {
   }
   return out
 })
+const hasReserved = computed(() => cells.value.some((c: any) => c.kind === 'absent_reserve'))
+const releasedCount = computed(() => data.value?.stats?.absent_released ?? 0)
 function isViol(cell: any) {
   if (cell.empty) return false
   const id = cell.candidate_id ?? cell.id
@@ -46,12 +48,18 @@ function paperClass(pid: number) {
   <h1>考场课桌网格</h1>
   <p class="sub">课桌网格为主视图 · 左侧考生名册夹板 · 违规课桌高亮</p>
   <button class="btn" @click="run">重新排座</button>
+  <span v-if="hasReserved" class="muted" style="margin-left:0.75rem;font-size:0.8rem">
+    ▨ 灰纹格 = 缺考占格（占格保留策略生效中，该格别人不得坐）
+  </span>
+  <span v-else-if="releasedCount" class="muted" style="margin-left:0.75rem;font-size:0.8rem">
+    缺考 {{ releasedCount }} 人已释放座位，不占格
+  </span>
   <div class="hs-classroom" style="margin-top:0.85rem">
     <aside class="hs-clipboard">
       <h2>考生名册</h2>
       <div v-for="c in candidates" :key="c.id" class="hs-roster-row">
         <div>
-          <div>{{ c.name }}</div>
+          <div>{{ c.name }} <span v-if="c.absent" class="badge badge-warn">缺考</span></div>
           <div class="hs-ticket">{{ c.ticket_no }}</div>
         </div>
         <div>卷{{ c.paper_id }}</div>
@@ -62,10 +70,11 @@ function paperClass(pid: number) {
         <div
           v-for="(cell,i) in cells" :key="i"
           class="hs-desk"
-          :class="{ empty: cell.empty, 'hs-viol': isViol(cell) }"
+          :class="{ empty: cell.empty, 'hs-viol': isViol(cell), 'hs-absent': cell.kind === 'absent_reserve' }"
         >
           <template v-if="!cell.empty">
-            <span class="hs-paper-tag" :class="paperClass(cell.paper_id)">卷{{ cell.paper_id }}</span>
+            <span v-if="cell.kind === 'absent_reserve'" class="hs-absent-tag">缺考占格</span>
+            <span v-else class="hs-paper-tag" :class="paperClass(cell.paper_id)">卷{{ cell.paper_id }}</span>
             <div>{{ cell.name }}</div>
           </template>
           <template v-else>·</template>

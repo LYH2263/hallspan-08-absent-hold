@@ -133,6 +133,17 @@ h1 {
   background: #fde8e6;
   box-shadow: 0 0 0 2px rgba(192,57,43,0.35);
 }
+.hs-desk.hs-absent {
+  background: repeating-linear-gradient(45deg, #e8e2d2, #e8e2d2 6px, #d8d0bc 6px, #d8d0bc 12px);
+  border-style: dotted;
+  color: var(--hs-muted);
+}
+.hs-desk .hs-absent-tag {
+  position: absolute; top: 2px; right: 3px;
+  font-size: 0.58rem; font-weight: 800;
+  padding: 0 3px; border-radius: 2px; color: #fff;
+  background: var(--hs-muted);
+}
 .hs-desk .hs-paper-tag {
   position: absolute; top: 2px; right: 3px;
   font-size: 0.58rem; font-weight: 800;
